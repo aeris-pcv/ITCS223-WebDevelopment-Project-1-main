@@ -56,6 +56,7 @@ Now you can run our database.
 
 4. ### Start the back-end web service
 
+Typing this command in the terminal inside sec2_gr3_ws_src folder
 ```bash
 npm start
 ```
@@ -75,9 +76,11 @@ The API is now available at **`http://localhost:3000`**.
 
 Open a **new terminal**, go to the front-end folder, and start a static file server:
 
+Typing this command in the terminal inside sec2_gr3_fe_src folder
 ```bash
 npm start
 ```
+Expected console output:
 
 ```
 Long Gone front-end server running at <http://localhost:8080>
