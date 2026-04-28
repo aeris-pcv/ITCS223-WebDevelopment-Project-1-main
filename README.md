@@ -40,16 +40,16 @@ Packages installed.
 ---
 3. ### Connect database to MySQL
 - By searching MySQL inside your computer
-![alt text](/readme_img_folder/image.png)
+![image.png](/readme_img_folder/image.png)
 - Open MySQL then select your available connecttion and type your password then click **ok**
-![alt text](/readme_img_folder/image-1.png)
-- Click **file** then clcik **Open SQL Script**
-![alt text](/readme_img_folder/image-2.png)
+![image-1.png](/readme_img_folder/image-1.png)
+- Click **file** then click **Open SQL Script**
+![image-2.png](/readme_img_folder/image-2.png)
 - Now go to the folder where you put this project in after that select file name **sec2_gr3_database.sql** click **open**
-![alt text](/readme_img_folder/image-3.png)
+![image-3.png](/readme_img_folder/image-3.png)
 - Run the script 1 time by clicking the **execute** button
-![alt text](/readme_img_folder/image-4.png)
-- 
+![image-4.png](/readme_img_folder/image-4.png)
+
 
 Now you can run our database.
 ---
