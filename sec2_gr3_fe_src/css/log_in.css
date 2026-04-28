@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* We use a haunted house image for the background */
+    background-image: url('../images/login-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+}
+
+.login-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    /* Dark overlay over the background image to make the text pop more if needed */
+    background-color: rgba(0, 0, 0, 0.2); 
+}
+
+.glass-card {
+    background: rgba(75, 80, 90, 0.7); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    width: 100%;
+    max-width: 900px;
+    height: 85vh;
+    max-height: 750px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.back-link {
+    position: absolute;
+    top: 2.5rem;
+    left: 2.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.6rem 1rem;
+    border-radius: 0.4rem;
+    transition: background 0.2s;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.login-title {
+    font-size: 3rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 4rem;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    width: 90px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #f3f4f6;
+    text-align: left;
+}
+
+.form-group input[type="text"],
+.password-input-wrapper input {
+    flex: 1;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    color: #111827;
+}
+
+.password-input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 1rem;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 114px; /* Align with inputs: 90px label + 24px gap */
+    margin-top: -0.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #e5e7eb;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.sign-in-btn {
+    margin-top: 0.5rem;
+    margin-left: 114px; /* Align with inputs */
+    background-color: #2563eb; /* Bright Blue */
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sign-in-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .form-options, .sign-in-btn {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    
+    .sign-in-btn {
+        width: 100%;
+    }
+    
+    .glass-card {
+        padding: 2rem;
+        height: auto;
+    }
+    
+    .login-title {
+        font-size: 2.2rem;
+        margin-top: 3rem;
+    }
+}
+
+/* ─── ID Selector (criteria requirement) ─── */
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ─── Footer ─── */
+#siteFooter {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+}

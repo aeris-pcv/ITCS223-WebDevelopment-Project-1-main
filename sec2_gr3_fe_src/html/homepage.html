@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long Gone - Haunted House Real Estate</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/homepage.css">
+    <!-- Shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+
+    <!-- Header with Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="/homepage" class="nav-brand">Long Gone</a>
+            <div class="nav-links">
+                <a href="/buy_search">Buy</a>
+                <a href="/renting_search">Rent</a>
+                <a href="/team_page">Our Team</a>
+            </div>
+            <a href="/log_in" class="admin-btn">
+                <i class="fa-solid fa-lock"></i> Admin
+            </a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">Long Gone</h1>
+        <p class="hero-subtitle">want to live in a haunted house? Find here</p>
+        
+        <div class="search-container">
+            <div class="form-group">
+                <label>I want to</label>
+                <select id="heroIntent">
+                    <option value="buy">Buy</option>
+                    <option value="rent">Rent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="heroCategory">
+                    <option value="">All</option>
+                    <option>Villa</option>
+                    <option>Condo</option>
+                    <option>Townhouse</option>
+                    <option>Mansion</option>
+                    <option>Bungalow</option>
+                    <option>Penthouse</option>
+                    <option>Studio</option>
+                    <option>Cabin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Rating</label>
+                <select id="heroRating">
+                    <option value="">Any</option>
+                    <option value="5">5 ☠☠☠☠☠</option>
+                    <option value="4">4 ☠☠☠☠</option>
+                    <option value="3">3 ☠☠☠</option>
+                    <option value="2">2 ☠☠</option>
+                    <option value="1">1 ☠</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="heroLocation" placeholder="Address...">
+            </div>
+            <button class="search-btn" id="heroSearchBtn">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+    </section>
+
+    <!-- Featured Section -->
+    <section class="featured">
+        <h2 class="section-title">Featured Haunted House</h2>
+        
+        <div class="carousel">
+            <button class="carousel-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+            
+            <div class="cards-container" id="carouselCards">
+                <!-- Cards loaded dynamically from the API -->
+                <div class="house-card" style="justify-content:center; align-items:center; min-height:200px;">
+                    <p style="color:#9ca3af; font-size:1rem;">Loading...</p>
+                </div>
+            </div>
+
+            <button class="carousel-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Why Long Gone Section -->
+    <section class="why-section">
+        <h2 class="section-title">Why Long Gone?</h2>
+        
+        <div class="features-container">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-house feature-icon"></i>
+                <p class="feature-text">Verified Haunted Properties<br>Every listing is investigated<br>by our paranormal experts.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-ghost feature-icon"></i>
+                <p class="feature-text">Spirit Rating System<br>Our 5-skull scale rates the<br>supernatural activity level.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-location-dot feature-icon"></i>
+                <p class="feature-text">Locations Across Thailand<br>From Bangkok to Chiang Mai,<br>find your perfect haunt.</p>
+            </div>
+        </div>
+    </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ─── Build one card element from a house object ───────────────────────────
+    function buildCard(house) {
+        const photo = (house.photos && house.photos.length > 0)
+            ? house.photos[0].PhotoRef
+            : 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop';
+
+        const badge   = house.BuyingStatus  ? 'Buy'
+                      : house.RentingStatus ? 'Rent'
+                      : 'View';
+
+        const price   = house.BuyingStatus
+            ? (house.BuyingPrice  ? Number(house.BuyingPrice).toLocaleString()  + ' THB' : 'N/A')
+            : (house.RentingPrice ? Number(house.RentingPrice).toLocaleString() + ' THB / mo' : 'N/A');
+
+        const rating  = Math.round(house.avgRating || 0);
+        const skulls  = Array.from({ length: 5 }, (_, i) =>
+            `<i class="fa-solid fa-skull" style="${i < rating ? '' : 'opacity:0.25'}"></i>`
+        ).join('');
+
+        const location = [house.District, house.Province, house.Zipcode]
+            .filter(Boolean).join(', ') || house.HAreaName || '';
+
+        const card = document.createElement('div');
+        card.className = 'house-card';
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            window.location.href = `/product_detail?id=${house.HouseID}`;
+        });
+        card.innerHTML = `
+            <img src="${photo}" alt="${house.HouseName}" class="house-img"
+                onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop'">
+            <div class="card-content">
+                <div class="card-header">
+                    <h3 class="house-name">${house.HouseName}</h3>
+                    <span class="badge">${badge}</span>
+                </div>
+                <div class="house-location">
+                    <i class="fa-solid fa-location-dot"></i> ${location}
+                </div>
+                <div class="card-footer">
+                    <div class="house-price">${price}</div>
+                    <div class="house-rating">${skulls}</div>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    // ─── Load featured houses from API ───────────────────────────────────────
+    const container = document.getElementById('carouselCards');
+    let   allHouses = [];
+    let   page      = 0;
+    const perPage   = 3;
+
+    async function loadFeaturedHouses() {
+        try {
+            const { data } = await getAllHouses();
+            allHouses = data;
+            renderPage();
+        } catch (err) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:2rem; color:#9ca3af; font-size:0.95rem;">
+                    Could not load houses (API offline). Showing static preview.
+                </div>`;
+            console.warn('Featured houses API error:', err.message);
+        }
+    }
+
+    function renderPage() {
+        container.innerHTML = '';
+        const slice = allHouses.slice(page * perPage, (page + 1) * perPage);
+        if (slice.length === 0) {
+            container.innerHTML = '<div style="padding:2rem;color:#9ca3af;">No houses found.</div>';
+            return;
+        }
+        slice.forEach(h => container.appendChild(buildCard(h)));
+    }
+
+    // ─── Carousel prev / next ─────────────────────────────────────────────────
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        if (page > 0) { page--; renderPage(); }
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        if ((page + 1) * perPage < allHouses.length) { page++; renderPage(); }
+    });
+
+    loadFeaturedHouses();
+
+    // ─── Hero Search → redirect to buy or rent page ───────────────────────────
+    document.getElementById('heroSearchBtn').addEventListener('click', () => {
+        const intent   = document.getElementById('heroIntent').value;       // 'buy' | 'rent'
+        const category = document.getElementById('heroCategory').value;
+        const rating   = document.getElementById('heroRating').value;
+        const location = document.getElementById('heroLocation').value.trim();
+
+        const params = new URLSearchParams();
+        if (category) params.set('category', category);
+        if (rating)   params.set('rating',   rating);
+        if (location) params.set('location', location);
+
+        const dest = intent === 'rent' ? '/renting_search' : '/buy_search';
+        const query = params.toString() ? '?' + params.toString() : '';
+        window.location.href = dest + query;
+    });
+});
+</script>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+</body>
+</html>

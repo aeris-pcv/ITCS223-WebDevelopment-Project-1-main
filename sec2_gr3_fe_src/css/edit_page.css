@@ -1,0 +1,569 @@
+:root {
+    --bg-sidebar: #22242a;
+    --text-sidebar: #a1a1aa;
+    --text-sidebar-active: #ffffff;
+    --bg-main: #ffffff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --accent-blue: #3b82f6;
+    --accent-yellow: #d97706; /* edit button color */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow: hidden;
+}
+
+/* Sidebar (Copied from dashboard) */
+.sidebar {
+    width: 250px;
+    background-color: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-link {
+    padding: 0.9rem 2.5rem;
+    color: var(--text-sidebar);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    position: relative;
+}
+
+.sidebar-link:hover {
+    color: var(--text-sidebar-active);
+}
+
+.sidebar-link.active {
+    color: var(--text-sidebar-active);
+}
+
+.sidebar-link.active::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: white;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 4rem;
+    overflow-y: auto;
+}
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.profile-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+    background-color: #9ca3af;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: var(--accent-blue);
+    color: white;
+    font-size: 0.55rem;
+    font-weight: bold;
+    padding: 0.15rem 0.35rem;
+    border-radius: 1rem;
+    border: 2px solid white;
+}
+
+/* Header Area */
+.edit-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.return-btn {
+    background-color: #e5e7eb;
+    color: #4b5563;
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+}
+
+.return-btn:hover {
+    background-color: #d1d5db;
+}
+
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Editing Layout */
+.edit-top {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.images-col {
+    display: flex;
+    gap: 1rem;
+}
+
+.thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.2rem;
+}
+
+.main-image {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 0.4rem;
+}
+
+.info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.house-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.data-label {
+    width: 60px;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.rating-stars {
+    color: #7f1d1d; /* dark red skulls */
+    font-size: 1.1rem;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.price-value {
+    color: #15803d; /* green */
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.edit-buttons-row {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.btn-edit-small {
+    background-color: #d97706; /* yellow/orange */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+}
+
+.btn-edit-small:hover {
+    background-color: #b45309;
+}
+
+/* Bottom Section */
+.edit-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.btn-edit-desc {
+    background-color: #d97706;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+}
+
+.btn-edit-desc:hover {
+    background-color: #b45309;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem 1.5rem;
+    align-items: start;
+}
+
+.detail-label {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #111827;
+}
+
+.detail-value {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #374151;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #d1d5db;
+    padding: 2.5rem 3rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transform: scale(0.95);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+/* Upload Styles */
+.upload-group {
+    margin-bottom: 1.5rem;
+}
+
+.upload-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.upload-sub-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: 2.5rem;
+    margin-top: 1rem;
+}
+
+.upload-label {
+    font-size: 1.05rem;
+    color: #374151;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.upload-sub-label {
+    font-size: 1rem;
+    color: #374151;
+    font-weight: 400;
+    min-width: 80px;
+}
+
+.btn-upload {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: filter 0.2s;
+}
+
+.btn-upload:hover {
+    filter: brightness(0.9);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.btn-action {
+    padding: 0.8rem 2.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: filter 0.2s;
+    color: white;
+}
+
+.btn-action:hover {
+    filter: brightness(0.9);
+}
+
+.modal-btn-return {
+    background-color: #6b7280;
+}
+
+.modal-btn-edit {
+    background-color: #0d6efd;
+}
+
+/* Upload Dropzone Modal */
+.dropzone-container {
+    background-color: white;
+    border: 2px dashed #9ca3af;
+    border-radius: 0.8rem;
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropzone-container:hover {
+    background-color: #f9fafb;
+}
+
+.dropzone-icon {
+    font-size: 5rem;
+    color: #9ca3af;
+    position: relative;
+}
+
+.dropzone-plus {
+    position: absolute;
+    bottom: -5px;
+    right: -10px;
+    background-color: #9ca3af;
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    border: 4px solid white;
+}
+
+.btn-upload-primary {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+}
+
+.btn-upload-primary:hover {
+    background-color: #0b5ed7;
+}
+
+/* Confirm Upload Modal */
+.preview-box {
+    background-color: white;
+    border: 1px solid #9ca3af;
+    border-radius: 0.4rem;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.image-tools {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    color: #6b7280;
+    font-size: 1.4rem;
+}
+
+.image-tools i {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.image-tools i:hover {
+    color: #374151;
+}
+
+/* Form Inputs */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.form-label {
+    font-size: 1.05rem;
+    color: #111827;
+    min-width: 80px;
+}
+
+.form-input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ─── ID Selector (criteria requirement) ─── */
+#btnEditImage {
+    transition: transform 0.15s ease;
+}
+
+#btnEditImage:hover {
+    transform: scale(1.05);
+}
+
+/* ─── Footer ─── */
+#siteFooter {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: var(--bg-white);
+}

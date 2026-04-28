@@ -1,0 +1,198 @@
+:root {
+    --bg-nav: #1e1e24;
+    --bg-main: #25262b;
+    --text-primary: #ffffff;
+    --text-secondary: #71717a;
+    --accent-red: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5rem;
+    background-color: var(--bg-nav);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 4rem;
+}
+
+.nav-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 400;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: var(--accent-red);
+}
+
+.nav-links a.active {
+    color: var(--accent-red);
+    font-weight: 600;
+}
+
+.admin-btn {
+    background-color: var(--accent-red);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+    font-size: 0.95rem;
+}
+
+.admin-btn:hover {
+    background-color: #dc2626;
+}
+
+/* Page Content */
+.container {
+    padding: 4rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+    letter-spacing: 0.5px;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 3rem;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.team-card {
+    background-color: #ffffff;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    color: #111827;
+    text-align: left;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-photo {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
+    /* In case the image has a transparent background, setting the blue bg color */
+    background-color: #0ea5e9; 
+}
+
+.team-info {
+    padding: 1.5rem 1.5rem 2rem 1.5rem;
+}
+
+.team-name {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    color: #1f2937;
+}
+
+.team-id {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+}
+
+.team-faculty {
+    font-size: 0.75rem;
+    color: #1f2937;
+    font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navbar {
+        padding: 1rem 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .container {
+        padding: 3rem 2rem;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+}
+
+/* ─── Social Media Links ─── */
+.team-socials {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.8rem;
+}
+
+.team-socials a {
+    color: #4b5563;
+    font-size: 1.4rem;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.team-socials a:hover {
+    color: var(--accent-red);
+    transform: scale(1.15);
+}
+
+/* ─── ID Selector (criteria requirement) ─── */
+#siteFooter {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: var(--bg-nav);
+}

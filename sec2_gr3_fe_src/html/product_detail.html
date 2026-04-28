@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haunted House in the middle of Salaya - Long Gone</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/product_detail.css">
+    <!-- Shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+
+    <!-- Header with Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="/homepage" class="nav-brand">Long Gone</a>
+            <div class="nav-links">
+                <a href="/buy_search">Buy</a>
+                <a href="/renting_search">Rent</a>
+                <a href="/team_page">Our Team</a>
+            </div>
+            <a href="/log_in" class="admin-btn">
+                <i class="fa-solid fa-lock"></i> Admin
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <a href="/homepage" class="return-link" onclick="history.back(); return false;"><i class="fa-solid fa-arrow-left-long"></i> Return</a>
+        
+        <!-- Top Section: Image & Main Details -->
+        <div class="product-top">
+            
+            <!-- Images Carousel -->
+            <div class="product-images">
+                <div class="thumbnail-col">
+                    <i class="fa-solid fa-chevron-up nav-arrow"></i>
+                    <div class="thumbnails" id="thumbnailCol">
+                        <!-- Populated by JS -->
+                    </div>
+                    <i class="fa-solid fa-chevron-down nav-arrow"></i>
+                </div>
+                <img src="" class="main-image" id="mainImage" alt="Main House View">
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title" id="productTitle">Loading...</h1>
+                
+                <div class="badges-container" id="badgesContainer">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="price-rating-row">
+                    <div class="rating-price-col">
+                        <div class="data-row">
+                            <div class="data-label">Rating</div>
+                            <div class="rating-stars" id="ratingStars">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-label" style="min-width: 110px;">Buying Price</div>
+                            <div class="price-value" id="buyingPriceValue">—</div>
+                        </div>
+                        <div class="data-row" style="margin-top: 0.5rem;">
+                            <div class="data-label" style="min-width: 110px;">Renting Price</div>
+                            <div class="price-value" id="rentingPriceValue">—</div>
+                        </div>
+                    </div>
+                    <iframe id="mapFrame" class="map-thumbnail" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src=""></iframe>
+                </div>
+
+                <button class="btn-request">
+                    <i class="fa-regular fa-calendar-days"></i> Request Viewing
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Section: Detailed Info -->
+        <div class="product-bottom">
+            <div class="details-grid">
+                <div class="detail-label">Description</div>
+                <div class="detail-value" id="detailDescription">—</div>
+                
+                <div class="detail-label">House ID</div>
+                <div class="detail-value" id="detailHouseId">—</div>
+                
+                <div class="detail-label">Location</div>
+                <div class="detail-value" id="detailLocation">—</div>
+            </div>
+
+            <div class="contact-box">
+                <h3 class="contact-title">Contact</h3>
+                <div class="contact-info">
+                    Email: xxxxxxxxxx@gmail.com<br>
+                    Phone Number: 014254785
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal 1: Request View -->
+    <div class="modal-overlay" id="requestModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
+            <h2 class="modal-title">Request to view<br>this house?</h2>
+            <button class="btn-appointment" id="btnSelectDate">Select Appointment Date</button>
+        </div>
+    </div>
+
+    <!-- Modal 2: Select Date -->
+    <div class="modal-overlay" id="dateModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <i class="fa-solid fa-xmark close-modal" id="closeDateModal"></i>
+            <h2 class="modal-title" style="margin-bottom: 0;">Select Appointment Date</h2>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="toggle-btn" id="calPrev"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span id="calMonthLabel" style="font-weight:600; font-size:1rem;"></span>
+                    <button class="toggle-btn" id="calNext"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="calendar-grid" id="calGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <p id="selectedDateDisplay" style="text-align:center; margin: 0.5rem 0 1rem; font-size:0.95rem; color:#4b5563; min-height:1.4em;"></p>
+            <button class="btn-confirm" id="btnConfirm">Confirm Appointment</button>
+        </div>
+    </div>
+
+    <!-- Modal 3: Success -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <h2 class="modal-title" style="margin-bottom: 0;">Appointment Confirmed!</h2>
+            
+            <div class="success-icon-container">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <button class="btn-return" id="btnReturn">Return</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let currentIndex = 0;
+
+            // ─── Read ?id= from the URL ──────────────────────────────────────
+            const params  = new URLSearchParams(window.location.search);
+            const houseId = params.get('id');
+
+            // ─── Populate page from API ──────────────────────────────────────
+            if (houseId) {
+                try {
+                    const { data: house } = await getHouseById(houseId);
+                    populatePage(house);
+                } catch (err) {
+                    console.warn('Could not load house:', err.message);
+                    document.getElementById('productTitle').textContent = 'Error: ' + err.stack;
+                }
+            }
+
+            function populatePage(house) {
+                // Title
+                document.title = `${house.HouseName} - Long Gone`;
+                document.getElementById('productTitle').textContent = house.HouseName;
+
+                // Badges
+                const badges = document.getElementById('badgesContainer');
+                badges.innerHTML = [
+                    house.bedroomCount  != null ? `${house.bedroomCount} Bedroom`  : null,
+                    house.bathroomCount != null ? `${house.bathroomCount} Bathroom` : null,
+                    house.basementCount != null ? `${house.basementCount} Basement` : null,
+                ].filter(Boolean).map(b => `<span class="feature-badge">${b}</span>`).join('');
+
+                // Rating skulls
+                const rating = Math.round(house.avgRating || 0);
+                document.getElementById('ratingStars').innerHTML =
+                    Array.from({ length: 5 }, (_, i) =>
+                        `<i class="fa-solid fa-skull" style="${i < rating ? '' : 'opacity:0.25'}"></i>`
+                    ).join('');
+
+                // Prices
+                const buyingVal = house.BuyingStatus && house.BuyingPrice
+                    ? Number(house.BuyingPrice).toLocaleString() + ' THB' : 'N/A';
+                const rentingVal = house.RentingStatus && house.RentingPrice
+                    ? Number(house.RentingPrice).toLocaleString() + ' THB / mo' : 'N/A';
+                
+                document.getElementById('buyingPriceValue').textContent = buyingVal;
+                document.getElementById('rentingPriceValue').textContent = rentingVal;
+
+                // Description / ID / Location
+                document.getElementById('detailDescription').textContent =
+                    house.Description || 'No description available.';
+                document.getElementById('detailHouseId').textContent = house.HouseID;
+                const loc = [house.Subdistrict, house.District, house.Province, house.Zipcode]
+                    .filter(Boolean).join(', ') || house.HAreaName || '—';
+                document.getElementById('detailLocation').textContent = loc;
+
+                // Map
+                const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(loc)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+                const mapFrame = document.getElementById('mapFrame');
+                if (mapFrame) mapFrame.src = mapUrl;
+
+                // Photos
+                const fallback = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop';
+                const photos   = (house.photos && house.photos.length > 0)
+                    ? house.photos.map(p => p.PhotoRef)
+                    : [fallback];
+
+                const mainImg      = document.getElementById('mainImage');
+                const thumbCol     = document.getElementById('thumbnailCol');
+                mainImg.src        = photos[0];
+                mainImg.onerror    = () => { mainImg.src = fallback; };
+
+                thumbCol.innerHTML = '';
+                photos.forEach((src, i) => {
+                    const img = document.createElement('img');
+                    img.src       = src;
+                    img.alt       = `House view ${i + 1}`;
+                    img.className = 'thumbnail' + (i === 0 ? ' active' : '');
+                    img.onerror   = () => { img.src = fallback; };
+                    img.addEventListener('click', () => {
+                        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                        img.classList.add('active');
+                        mainImg.src = src;
+                        currentIndex = i;
+                    });
+                    thumbCol.appendChild(img);
+                });
+
+                currentIndex = 0;
+            }
+
+            // ─── Thumbnail navigation (arrows) ───────────────────────────────
+            const arrowUp   = document.querySelector('.fa-chevron-up');
+            const arrowDown = document.querySelector('.fa-chevron-down');
+            const mainImage = document.getElementById('mainImage');
+
+            function getThumbs() { return document.querySelectorAll('.thumbnail'); }
+
+            function updateImage(index) {
+                const thumbs = getThumbs();
+                if (!thumbs.length) return;
+                thumbs.forEach(t => t.classList.remove('active'));
+                thumbs[index].classList.add('active');
+                mainImage.src = thumbs[index].src;
+                currentIndex  = index;
+            }
+
+            if (arrowUp) arrowUp.addEventListener('click', () => {
+                const thumbs = getThumbs();
+                updateImage((currentIndex - 1 + thumbs.length) % thumbs.length);
+            });
+            if (arrowDown) arrowDown.addEventListener('click', () => {
+                const thumbs = getThumbs();
+                updateImage((currentIndex + 1) % thumbs.length);
+            });
+
+            // ─── Modal logic ─────────────────────────────────────────────────
+            const btnRequest    = document.querySelector('.btn-request');
+            const requestModal  = document.getElementById('requestModal');
+            const closeModal    = document.getElementById('closeModal');
+            const btnSelectDate = document.getElementById('btnSelectDate');
+            const dateModal     = document.getElementById('dateModal');
+            const closeDateModal = document.getElementById('closeDateModal');
+            const btnConfirm    = document.getElementById('btnConfirm');
+            const successModal  = document.getElementById('successModal');
+            const btnReturn     = document.getElementById('btnReturn');
+
+            if (btnRequest)    btnRequest.addEventListener('click',    () => requestModal.classList.add('active'));
+            if (closeModal)    closeModal.addEventListener('click',    () => requestModal.classList.remove('active'));
+            if (btnSelectDate) btnSelectDate.addEventListener('click', () => {
+                requestModal.classList.remove('active');
+                dateModal.classList.add('active');
+                renderCalendar();
+            });
+            if (closeDateModal) closeDateModal.addEventListener('click', () => dateModal.classList.remove('active'));
+
+            // ─── Interactive Calendar ─────────────────────────────────────────
+            const MONTHS = ['January','February','March','April','May','June',
+                            'July','August','September','October','November','December'];
+            const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+            let calYear  = new Date().getFullYear();
+            let calMonth = new Date().getMonth();
+            let selectedDate = null;  // JS Date object
+
+            function renderCalendar() {
+                const grid  = document.getElementById('calGrid');
+                const label = document.getElementById('calMonthLabel');
+                label.textContent = `${MONTHS[calMonth]} ${calYear}`;
+                grid.innerHTML = '';
+
+                // Day name headers
+                DAY_NAMES.forEach(d => {
+                    const el = document.createElement('div');
+                    el.className = 'calendar-day-name';
+                    el.textContent = d;
+                    grid.appendChild(el);
+                });
+
+                const firstDay  = new Date(calYear, calMonth, 1).getDay();
+                const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+                const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+                const today = new Date();
+
+                // Leading muted days from previous month
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const el = document.createElement('div');
+                    el.className = 'calendar-day muted';
+                    el.textContent = daysInPrev - i;
+                    grid.appendChild(el);
+                }
+
+                // Current month days
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const el   = document.createElement('div');
+                    const date = new Date(calYear, calMonth, d);
+                    let cls = 'calendar-day';
+
+                    if (date.toDateString() === today.toDateString()) cls += ' today';
+                    if (selectedDate && date.toDateString() === selectedDate.toDateString()) cls += ' selected';
+
+                    el.className = cls;
+                    el.textContent = d;
+
+                    el.addEventListener('click', () => {
+                        selectedDate = date;
+                        const disp = document.getElementById('selectedDateDisplay');
+                        if (disp) disp.textContent = `Selected: ${date.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}`;
+                        renderCalendar();
+                    });
+                    grid.appendChild(el);
+                }
+
+                // Trailing muted days to fill grid
+                const total = firstDay + daysInMonth;
+                const trailing = total % 7 === 0 ? 0 : 7 - (total % 7);
+                for (let d = 1; d <= trailing; d++) {
+                    const el = document.createElement('div');
+                    el.className = 'calendar-day muted';
+                    el.textContent = d;
+                    grid.appendChild(el);
+                }
+            }
+
+            document.getElementById('calPrev').addEventListener('click', () => {
+                calMonth--;
+                if (calMonth < 0) { calMonth = 11; calYear--; }
+                renderCalendar();
+            });
+            document.getElementById('calNext').addEventListener('click', () => {
+                calMonth++;
+                if (calMonth > 11) { calMonth = 0; calYear++; }
+                renderCalendar();
+            });
+
+            // ─── Confirm → save to DB ─────────────────────────────────────────
+            if (btnConfirm) {
+                btnConfirm.addEventListener('click', async () => {
+                    if (!selectedDate) {
+                        alert('Please select a date first.');
+                        return;
+                    }
+
+                    // Format date as YYYY-MM-DD
+                    const isoDate = selectedDate.toISOString().split('T')[0];
+
+                    // Generate a simple guest customer ID (10 chars)
+                    const guestId = 'C' + String(Date.now()).slice(-9);
+
+                    try {
+                        await requestViewing(guestId, houseId, isoDate);
+                    } catch (err) {
+                        console.warn('Request viewing API error:', err.message);
+                    }
+
+                    dateModal.classList.remove('active');
+                    successModal.classList.add('active');
+                });
+            }
+
+            if (btnReturn) btnReturn.addEventListener('click', () => successModal.classList.remove('active'));
+
+            window.addEventListener('click', (e) => {
+                [requestModal, dateModal, successModal].forEach(m => {
+                    if (m && e.target === m) m.classList.remove('active');
+                });
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+</body>
+</html>

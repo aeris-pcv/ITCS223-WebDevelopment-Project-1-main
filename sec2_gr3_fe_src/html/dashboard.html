@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Long Gone</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-title">Long Gone</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link">Dashboard</a>
+            <a href="/dashboard" class="sidebar-link active">Product Management</a>
+            <a href="#" class="sidebar-link" id="btnSignOut" style="margin-top: 2rem; color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <a href="/homepage" class="topbar-icon"><i class="fa-solid fa-house"></i></a>
+            <div class="profile-container">
+                <div class="profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="notification-badge">99</div>
+            </div>
+        </header>
+
+        <!-- Page Header -->
+        <h1 class="page-header">Product Management</h1>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="search-bar">
+                <input type="text" class="search-input" id="searchHouseInput" placeholder="Search by House ID...">
+                <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <button class="add-new-btn" id="btnAddNew" style="border: none; cursor: pointer; font-family: 'Inter', sans-serif;"><i class="fa-solid fa-plus"></i> Add New</button>
+        </div>
+
+        <!-- Data Table -->
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>House Name</th>
+                    <th>House ID</th>
+                    <th>Last Updated</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="houseTableBody">
+                <!-- Rows are loaded dynamically from the API -->
+                <tr id="loadingRow">
+                    <td colspan="5" style="text-align:center; padding: 2rem; color: #6b7280;">Loading houses...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination" id="dashboardPagination">
+            <span id="totalItemsDisplay">Total 0 items</span>
+            <div class="page-numbers" id="pageNumbersContainer">
+                <!-- Populated by JS -->
+            </div>
+            <select class="page-select" id="pageSizeSelect">
+                <option value="10">10 / page</option>
+                <option value="20">20 / page</option>
+                <option value="50">50 / page</option>
+            </select>
+            <span>Go to <input type="number" class="go-to-input" id="goToPageInput" min="1" style="width: 50px;"></span>
+        </div>
+    </main>
+
+    <!-- Search Result Modal -->
+    <div class="modal-overlay" id="searchModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Search Result</h2>
+            
+            <div class="form-group">
+                <label class="form-label">House Name</label>
+                <input type="text" class="form-input" id="searchResultName" value="" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">House ID</label>
+                <input type="text" class="form-input" id="searchResultId" value="" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Last Updated</label>
+                <input type="text" class="form-input" id="searchResultDate" value="" readonly>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-action modal-btn-return" id="closeSearchModal">Return</button>
+                <button class="btn-action modal-btn-edit" id="searchBtnEdit">Edit</button>
+                <button class="btn-action modal-btn-view" id="searchBtnView">View</button>
+            </div>
+        </div>
+    </div>
+    <!-- Add New House Modal -->
+    <div class="modal-overlay" id="addNewHouseModal">
+        <div class="modal-content" style="max-width: 450px; padding: 2.5rem 3rem;">
+            <h2 class="modal-title">Add New House</h2>
+            
+            <div class="form-group">
+                <label class="form-label" style="min-width: 100px;">House Name</label>
+                <input type="text" class="form-input" id="newHouseName" placeholder="placeholder">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="min-width: 100px;">House ID</label>
+                <input type="text" class="form-input" id="newHouseId" placeholder="placeholder">
+            </div>
+
+            <div class="modal-actions" style="gap: 1.5rem; margin-top: 2.5rem;">
+                <button class="btn-action modal-btn-return" id="closeAddNewHouseModal" style="padding: 0.8rem 2rem;">Cancel</button>
+                <button class="btn-action modal-btn-edit" id="btnSubmitNewHouse" style="padding: 0.8rem 2rem;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete House Modal -->
+    <div class="modal-overlay" id="deleteHouseModal">
+        <div class="modal-content" style="max-width: 420px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 0.5rem; font-size: 2rem;">Do you want to Delete</h2>
+            <h3 style="text-align: center; margin-bottom: 2rem; font-weight: 500; font-size: 1.6rem; color: #111827;">House ID: <span id="deleteHouseIdDisplay"></span> ?</h3>
+
+            <div class="modal-actions" style="gap: 1.5rem; margin-top: 1.5rem; justify-content: center;">
+                <button class="btn-action modal-btn-return" id="closeDeleteHouseModal" style="padding: 0.8rem 2rem;">Cancel</button>
+                <button class="btn-action modal-btn-edit" id="btnConfirmDelete" style="padding: 0.8rem 2rem;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Success Modal -->
+    <div class="modal-overlay" id="addSuccessModal">
+        <div class="modal-content" style="max-width: 400px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 1.5rem; font-size: 2.2rem;">Added Succesfully</h2>
+            
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <div style="width: 120px; height: 120px; background-color: #198754; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 4rem;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button class="btn-action modal-btn-edit" id="btnReturnFromAdd" style="width: 150px;">Return</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Success Modal -->
+    <div class="modal-overlay" id="deleteSuccessModal">
+        <div class="modal-content" style="max-width: 400px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 1.5rem; font-size: 2.2rem;">Deleted Succesfully</h2>
+            
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <div style="width: 120px; height: 120px; background-color: #198754; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 4rem;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button class="btn-action modal-btn-edit" id="btnReturnFromDelete" style="width: 150px;">Return</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Protect the admin page
+        requireAdminSession();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // ─── Element refs ─────────────────────────────────────────────
+            const searchBtn            = document.querySelector('.search-btn');
+            const searchModal          = document.getElementById('searchModal');
+            const closeSearchModal     = document.getElementById('closeSearchModal');
+
+            const btnAddNew            = document.getElementById('btnAddNew');
+            const addNewHouseModal     = document.getElementById('addNewHouseModal');
+            const closeAddNewHouseModal = document.getElementById('closeAddNewHouseModal');
+            const btnSubmitNewHouse    = document.getElementById('btnSubmitNewHouse');
+            const newHouseName         = document.getElementById('newHouseName');
+            const newHouseId           = document.getElementById('newHouseId');
+            const tableBody            = document.getElementById('houseTableBody');
+
+            const deleteHouseModal     = document.getElementById('deleteHouseModal');
+            const closeDeleteHouseModal = document.getElementById('closeDeleteHouseModal');
+            const btnConfirmDelete     = document.getElementById('btnConfirmDelete');
+            const deleteHouseIdDisplay = document.getElementById('deleteHouseIdDisplay');
+            let   rowToDelete          = null;
+            let   houseIdToDelete      = null;
+
+            const addSuccessModal      = document.getElementById('addSuccessModal');
+            const deleteSuccessModal   = document.getElementById('deleteSuccessModal');
+            const btnReturnFromAdd     = document.getElementById('btnReturnFromAdd');
+            const btnReturnFromDelete  = document.getElementById('btnReturnFromDelete');
+
+            // ─── Helper: build a table row from a house object ────────────
+            function buildRow(house) {
+                const photo = (house.photos && house.photos.length > 0)
+                    ? house.photos[0].PhotoRef
+                    : 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop';
+
+                const tr = document.createElement('tr');
+                tr.dataset.houseId = house.HouseID;
+                tr.innerHTML = `
+                    <td><img src="${photo}" alt="House" class="table-img"
+                        onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop'"></td>
+                    <td>${house.HouseName}</td>
+                    <td>${house.HouseID}</td>
+                    <td>${todayDateString()}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="/product_detail?id=${house.HouseID}" class="action-btn btn-view"><i class="fa-regular fa-eye"></i></a>
+                            <a href="/edit_page?id=${house.HouseID}"      class="action-btn btn-edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <button class="action-btn btn-delete" data-id="${house.HouseID}"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </td>
+                `;
+                return tr;
+            }
+
+            // ─── Pagination State ─────────────────────────────────────────
+            let allHousesData = [];
+            let currentPage = 1;
+            let itemsPerPage = 10;
+
+            const totalItemsDisplay = document.getElementById('totalItemsDisplay');
+            const pageNumbersContainer = document.getElementById('pageNumbersContainer');
+            const pageSizeSelect = document.getElementById('pageSizeSelect');
+            const goToPageInput = document.getElementById('goToPageInput');
+
+            function renderTable() {
+                tableBody.innerHTML = '';
+                if (allHousesData.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#6b7280;">No houses found.</td></tr>';
+                    totalItemsDisplay.textContent = 'Total 0 items';
+                    pageNumbersContainer.innerHTML = '';
+                    return;
+                }
+
+                const totalPages = Math.ceil(allHousesData.length / itemsPerPage);
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                const startIdx = (currentPage - 1) * itemsPerPage;
+                const endIdx = startIdx + itemsPerPage;
+                const pageData = allHousesData.slice(startIdx, endIdx);
+
+                pageData.forEach(house => tableBody.appendChild(buildRow(house)));
+                totalItemsDisplay.textContent = `Total ${allHousesData.length} items`;
+                renderPagination(totalPages);
+            }
+
+            function renderPagination(totalPages) {
+                pageNumbersContainer.innerHTML = '';
+
+                // Prev button
+                const prevBtn = document.createElement('a');
+                prevBtn.href = '#';
+                prevBtn.className = `page-btn ${currentPage === 1 ? 'disabled' : ''}`;
+                prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+                prevBtn.onclick = (e) => { e.preventDefault(); if(currentPage > 1) { currentPage--; renderTable(); } };
+                pageNumbersContainer.appendChild(prevBtn);
+
+                // Page numbers (simplified: show all if <= 7, else show current with dots - keeping it simple by showing limited window)
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, currentPage + 2);
+
+                if (startPage > 1) {
+                    const firstBtn = document.createElement('a');
+                    firstBtn.href = '#'; firstBtn.className = 'page-btn'; firstBtn.textContent = '1';
+                    firstBtn.onclick = (e) => { e.preventDefault(); currentPage = 1; renderTable(); };
+                    pageNumbersContainer.appendChild(firstBtn);
+                    if (startPage > 2) {
+                        const dots = document.createElement('span'); dots.className = 'page-btn dots'; dots.textContent = '...';
+                        pageNumbersContainer.appendChild(dots);
+                    }
+                }
+
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('a');
+                    pageBtn.href = '#';
+                    pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = (e) => { e.preventDefault(); currentPage = i; renderTable(); };
+                    pageNumbersContainer.appendChild(pageBtn);
+                }
+
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const dots = document.createElement('span'); dots.className = 'page-btn dots'; dots.textContent = '...';
+                        pageNumbersContainer.appendChild(dots);
+                    }
+                    const lastBtn = document.createElement('a');
+                    lastBtn.href = '#'; lastBtn.className = 'page-btn'; lastBtn.textContent = totalPages;
+                    lastBtn.onclick = (e) => { e.preventDefault(); currentPage = totalPages; renderTable(); };
+                    pageNumbersContainer.appendChild(lastBtn);
+                }
+
+                // Next button
+                const nextBtn = document.createElement('a');
+                nextBtn.href = '#';
+                nextBtn.className = `page-btn ${currentPage === totalPages ? 'disabled' : ''}`;
+                nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+                nextBtn.onclick = (e) => { e.preventDefault(); if(currentPage < totalPages) { currentPage++; renderTable(); } };
+                pageNumbersContainer.appendChild(nextBtn);
+            }
+
+            if (pageSizeSelect) {
+                pageSizeSelect.addEventListener('change', (e) => {
+                    itemsPerPage = parseInt(e.target.value, 10);
+                    currentPage = 1;
+                    renderTable();
+                });
+            }
+
+            if (goToPageInput) {
+                goToPageInput.addEventListener('change', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    if (val > 0) {
+                        currentPage = val;
+                        renderTable();
+                    }
+                });
+            }
+
+            // ─── Load houses from API ─────────────────────────────────────
+            async function loadHouses() {
+                try {
+                    const { data } = await getAllHouses();
+                    allHousesData = data;
+                    renderTable();
+                } catch (err) {
+                    console.warn('API unavailable.', err.message);
+                    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:2rem;color:#ef4444;">API Error: ${err.message}</td></tr>`;
+                }
+            }
+
+            loadHouses();
+
+            // ─── Search modal ─────────────────────────────────────────────
+            const searchInput = document.getElementById('searchHouseInput');
+            const searchResultName = document.getElementById('searchResultName');
+            const searchResultId = document.getElementById('searchResultId');
+            const searchResultDate = document.getElementById('searchResultDate');
+            const searchBtnEdit = document.getElementById('searchBtnEdit');
+            const searchBtnView = document.getElementById('searchBtnView');
+
+            if (searchBtn && searchModal && closeSearchModal) {
+                searchBtn.addEventListener('click', async () => {
+                    const id = searchInput.value.trim();
+                    if (!id) return alert('Please enter a House ID.');
+                    
+                    try {
+                        const { data } = await getHouseById(id);
+                        if (!data || !data.HouseID) throw new Error('Not found');
+                        
+                        searchResultName.value = data.HouseName;
+                        searchResultId.value = data.HouseID;
+                        searchResultDate.value = todayDateString();
+                        
+                        searchBtnEdit.onclick = () => window.location.href = `/edit_page?id=${data.HouseID}`;
+                        searchBtnView.onclick = () => window.location.href = `/product_detail?id=${data.HouseID}`;
+                        
+                        searchModal.classList.add('active');
+                    } catch (err) {
+                        alert('House not found! Ensure the ID is exactly correct (e.g. H0000000001).');
+                    }
+                });
+                closeSearchModal.addEventListener('click', () => searchModal.classList.remove('active'));
+            }
+
+            // ─── Add New House modal ──────────────────────────────────────
+            if (btnAddNew && addNewHouseModal && closeAddNewHouseModal) {
+                btnAddNew.addEventListener('click', () => addNewHouseModal.classList.add('active'));
+                closeAddNewHouseModal.addEventListener('click', () => addNewHouseModal.classList.remove('active'));
+            }
+
+            // ─── Delete delegation ────────────────────────────────────────
+            if (tableBody && deleteHouseModal) {
+                tableBody.addEventListener('click', (e) => {
+                    const deleteBtn = e.target.closest('.btn-delete');
+                    if (deleteBtn) {
+                        e.preventDefault();
+                        rowToDelete      = deleteBtn.closest('tr');
+                        houseIdToDelete  = deleteBtn.dataset.id || rowToDelete.querySelectorAll('td')[2].textContent.trim();
+                        if (deleteHouseIdDisplay) deleteHouseIdDisplay.textContent = houseIdToDelete;
+                        deleteHouseModal.classList.add('active');
+                    }
+                });
+            }
+
+            if (closeDeleteHouseModal) {
+                closeDeleteHouseModal.addEventListener('click', () => {
+                    deleteHouseModal.classList.remove('active');
+                    rowToDelete = null;
+                    houseIdToDelete = null;
+                });
+            }
+
+            // ─── Confirm Delete → call DELETE /houses/:id ─────────────────
+            if (btnConfirmDelete) {
+                btnConfirmDelete.addEventListener('click', async () => {
+                    try {
+                        if (houseIdToDelete) {
+                            await deleteHouse(houseIdToDelete);
+                        }
+                        
+                        // Remove from state and re-render
+                        if (houseIdToDelete) {
+                            allHousesData = allHousesData.filter(h => h.HouseID !== houseIdToDelete);
+                            renderTable();
+                        }
+                    } catch (err) {
+                        // If API fails (e.g. house not in DB), still remove from UI
+                        if (houseIdToDelete) {
+                            allHousesData = allHousesData.filter(h => h.HouseID !== houseIdToDelete);
+                            renderTable();
+                        }
+                        console.warn('Delete API error:', err.message);
+                    } finally {
+                        rowToDelete = null;
+                        houseIdToDelete = null;
+                        deleteHouseModal.classList.remove('active');
+                        deleteSuccessModal.classList.add('active');
+                    }
+                });
+            }
+
+            // ─── Confirm Add → call POST /houses ─────────────────────────
+            if (btnSubmitNewHouse && tableBody) {
+                btnSubmitNewHouse.addEventListener('click', async () => {
+                    if (!newHouseName.value || !newHouseId.value) return;
+
+                    const housePayload = {
+                        HouseID:       newHouseId.value.trim(),
+                        HouseName:     newHouseName.value.trim(),
+                        bedroomCount:  0,
+                        bathroomCount: 0,
+                        basementCount: 0,
+                        Description:   '',
+                        HcategoryID:   'CAT00001',
+                        HAreaName:     'Sukhumvit',
+                        BuyingStatus:  0,
+                        RentingStatus: 0,
+                        BuyingPrice:   0,
+                        RentingPrice:  0,
+                    };
+
+                    try {
+                        const response = await insertHouse(housePayload);
+                        
+                        // Add to state and re-render
+                        allHousesData.unshift({ HouseID: housePayload.HouseID, HouseName: housePayload.HouseName, photos: [] });
+                        renderTable();
+
+                        newHouseName.value = '';
+                        newHouseId.value   = '';
+                        addNewHouseModal.classList.remove('active');
+                        addSuccessModal.classList.add('active');
+                    } catch (err) {
+                        alert('Failed to add new house. Please ensure the House ID is unique and follows the format (e.g. H0000000099). Error: ' + err.message);
+                    }
+                });
+            }
+
+            // ─── Outside click to close modals ────────────────────────────
+            window.addEventListener('click', (e) => {
+                [searchModal, addNewHouseModal, deleteHouseModal, addSuccessModal, deleteSuccessModal]
+                    .forEach(modal => { if (modal && e.target === modal) modal.classList.remove('active'); });
+            });
+
+            // ─── Return buttons ───────────────────────────────────────────
+            if (btnReturnFromAdd)    btnReturnFromAdd.addEventListener('click',    () => addSuccessModal.classList.remove('active'));
+            if (btnReturnFromDelete) btnReturnFromDelete.addEventListener('click', () => deleteSuccessModal.classList.remove('active'));
+
+            // ─── Sign out logic ───────────────────────────────────────────
+            const btnSignOut = document.getElementById('btnSignOut');
+            if (btnSignOut) {
+                btnSignOut.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    clearAdminSession();
+                    window.location.href = '/homepage';
+                });
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+</body>
+</html>

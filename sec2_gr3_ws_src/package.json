@@ -1,0 +1,20 @@
+{
+  "name": "sec2_gr3_ws_src",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.2",
+    "nodemon": "^3.1.14",
+    "path": "^0.12.7"
+  }
+}

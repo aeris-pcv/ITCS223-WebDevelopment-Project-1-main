@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Long Gone</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/log_in.css">
+    <!-- Shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="login-container">
+        <div class="glass-card">
+            <!-- Back Button -->
+            <a href="/homepage" class="back-link">
+                <i class="fa-solid fa-arrow-left-long"></i> Back to Home Page
+            </a>
+            
+            <!-- Title -->
+            <h1 class="login-title">Welcome to<br>Admin Dashboard</h1>
+            
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <i class="fa-regular fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="sign-in-btn">Sign In</button>
+                <p id="errorMsg" style="color:#ef4444; margin-top:0.75rem; font-size:0.9rem; display:none;"></p>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clear any stale localStorage session from older builds
+            localStorage.removeItem('lg_admin');
+
+            // Auto-redirect if already logged in within the same browser session
+            if (getAdminSession()) {
+                window.location.href = '/dashboard';
+                return;
+            }
+
+            // Password toggle
+            const toggleBtn = document.querySelector('.toggle-password');
+            const pwdInput  = document.getElementById('password');
+            if (toggleBtn && pwdInput) {
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = pwdInput.type === 'password';
+                    pwdInput.type = isHidden ? 'text' : 'password';
+                    toggleBtn.className = isHidden
+                        ? 'fa-regular fa-eye-slash toggle-password'
+                        : 'fa-regular fa-eye toggle-password';
+                });
+            }
+
+            // Login form submit
+            const loginForm = document.getElementById('loginForm');
+            const errMsg    = document.getElementById('errorMsg');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const adminId  = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+
+                try {
+                    const { admin } = await loginAdmin(adminId, password);
+                    saveAdminSession(admin);
+                    window.location.href = '/dashboard';
+                } catch (err) {
+                    if (errMsg) {
+                        errMsg.textContent = 'Invalid username or password.';
+                        errMsg.style.display = 'block';
+                    }
+                    console.error('Login failed:', err.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

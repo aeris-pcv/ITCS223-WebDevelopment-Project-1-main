@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Page - Long Gone</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/edit_page.css">
+    <!-- Shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-title">Long Gone</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link">Dashboard</a>
+            <a href="/dashboard" class="sidebar-link active">Product Management</a>
+            <a href="#" class="sidebar-link" id="btnSignOut" style="margin-top: 2rem; color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="profile-container">
+                <div class="profile-avatar"><i class="fa-regular fa-user"></i></div>
+                <div class="notification-badge">99</div>
+            </div>
+        </header>
+
+        <!-- Header -->
+        <div class="edit-header">
+            <a href="/dashboard" class="return-btn"><i class="fa-solid fa-arrow-left-long"></i> Return</a>
+            <h1 class="page-title">House Editing</h1>
+        </div>
+
+        <!-- Top Details Section -->
+        <div class="edit-top">
+            <div class="images-col">
+                <div class="thumbnails">
+                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 1" onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=200'">
+                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 2" onerror="this.src='https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200'">
+                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 3" onerror="this.src='https://images.unsplash.com/photo-1505843513577-22bb7abd211a?w=200'">
+                </div>
+                <img src="../images/Chindanai.jpg" class="main-image" alt="Main View" onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=600'">
+            </div>
+
+            <div class="info-col">
+                <h2 class="house-name">Haunted house in the<br>middle of Salaya</h2>
+                
+                <div class="data-row">
+                    <div class="data-label">Rating</div>
+                    <div class="rating-stars">
+                        <i class="fa-solid fa-skull"></i>
+                        <i class="fa-solid fa-skull"></i>
+                        <i class="fa-solid fa-skull"></i>
+                        <i class="fa-solid fa-skull"></i>
+                        <i class="fa-solid fa-skull"></i>
+                    </div>
+                </div>
+
+                <div id="priceContainer" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <div class="edit-buttons-row">
+                    <button class="btn-edit-small" id="btnEditImage"><i class="fa-solid fa-pen-to-square"></i> Edit Image</button>
+                    <button class="btn-edit-small" id="btnEditPrice"><i class="fa-solid fa-pen-to-square"></i> Edit Price</button>
+                    <button class="btn-edit-small" id="btnEditName"><i class="fa-solid fa-pen-to-square"></i> Edit Name</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Details Section -->
+        <div class="edit-bottom">
+            <button class="btn-edit-desc" id="btnEditDesc"><i class="fa-solid fa-pen-to-square"></i> Edit Description</button>
+
+            <div class="details-grid">
+                <div class="detail-label">Description</div>
+                <div class="detail-value">
+                    In education, 67 became popular because it is often used as a passing or borderline score,
+                    symbolizing "barely passing." Students relate to it emotionally, so teachers and students mention it
+                    often in jokes and discussions.
+                </div>
+                
+                <div class="detail-label">House ID</div>
+                <div class="detail-value">67</div>
+                
+                <div class="detail-label">Location</div>
+                <div class="detail-value">Salaya, Phutthamonthon, Nakhon Pathom, 73170</div>
+                
+                <div class="detail-label">Bedrooms</div>
+                <div class="detail-value">0</div>
+                
+                <div class="detail-label">Bathrooms</div>
+                <div class="detail-value">0</div>
+                
+                <div class="detail-label">Basements</div>
+                <div class="detail-value">0</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Image Modal -->
+    <div class="modal-overlay" id="editImageModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Edit House Images</h2>
+            
+            <div class="upload-group">
+                <div class="upload-row">
+                    <label class="upload-label">Preview Image</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="modalPreview_0" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: none;">
+                        <button class="btn-upload" data-index="0"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upload-group">
+                <label class="upload-label">Details Images</label>
+                <div class="upload-sub-row">
+                    <label class="upload-sub-label">Image 1</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="modalPreview_1" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: none;">
+                        <button class="btn-upload" data-index="1"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                    </div>
+                </div>
+                <div class="upload-sub-row">
+                    <label class="upload-sub-label">Image 2</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="modalPreview_2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: none;">
+                        <button class="btn-upload" data-index="2"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                    </div>
+                </div>
+                <div class="upload-sub-row">
+                    <label class="upload-sub-label">Image 3</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="modalPreview_3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: none;">
+                        <button class="btn-upload" data-index="3"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-action modal-btn-return" id="closeEditImageModal">Return</button>
+                <button class="btn-action modal-btn-edit" id="btnSubmitEditImage">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Dropzone Modal -->
+    <div class="modal-overlay" id="uploadDropzoneModal">
+        <div class="modal-content" style="max-width: 400px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 1.5rem;">Upload Image</h2>
+            
+            <div class="dropzone-container" id="dropzoneArea">
+                <input type="file" id="fileUploadInput" accept="image/*" style="display: none;">
+                <div class="dropzone-icon" id="dropzoneIcon">
+                    <i class="fa-regular fa-image"></i>
+                    <div class="dropzone-plus"><i class="fa-solid fa-plus"></i></div>
+                </div>
+            </div>
+
+            <button class="btn-upload-primary" id="btnConfirmUpload"><i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image</button>
+        </div>
+    </div>
+
+    <!-- Confirm Upload Modal -->
+    <div class="modal-overlay" id="confirmUploadModal">
+        <div class="modal-content" style="max-width: 420px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 1.5rem;">Upload Image</h2>
+            
+            <div class="preview-box">
+                <div class="preview-content" id="previewContent">
+                    <i class="fa-regular fa-image" style="font-size: 6rem; color: #9ca3af;"></i>
+                </div>
+            </div>
+            
+            <div class="image-tools">
+                <i class="fa-solid fa-crop-simple" id="btnCropImage" title="Crop/Zoom"></i>
+                <i class="fa-solid fa-arrow-rotate-right" id="btnRotateImage" title="Rotate"></i>
+            </div>
+
+            <div class="modal-actions" style="justify-content: center; margin-top: 2rem; gap: 1rem;">
+                <button class="btn-action modal-btn-return" id="btnCancelUpload" style="width: 100%;">Cancel</button>
+                <button class="btn-action modal-btn-edit" id="btnFinalConfirm" style="width: 100%;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Success Modal -->
+    <div class="modal-overlay" id="editSuccessModal">
+        <div class="modal-content" style="max-width: 400px; padding: 2.5rem 2rem;">
+            <h2 class="modal-title" style="text-align: center; margin-bottom: 1.5rem;">Edited Succesfully</h2>
+            
+            <div style="display: flex; justify-content: center; margin: 2rem 0;">
+                <div style="width: 120px; height: 120px; background-color: #198754; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 4rem;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center;">
+                <button class="btn-action modal-btn-edit" id="btnReturnFromSuccess" style="width: 150px;">Return</button>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Price Modal -->
+    <div class="modal-overlay" id="editPriceModal">
+        <div class="modal-content" style="max-width: 450px; padding: 2.5rem 3rem;">
+            <h2 class="modal-title">Edit House Price</h2>
+            
+            <div class="form-group" style="margin-bottom: 1rem; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin-bottom: 0;">For Sale</label>
+                <input type="checkbox" id="buyingStatusInput" style="transform: scale(1.5);">
+            </div>
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <input type="number" class="form-input" id="buyingPriceInput" placeholder="Buying Price (THB)">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin-bottom: 0;">For Rent</label>
+                <input type="checkbox" id="rentingStatusInput" style="transform: scale(1.5);">
+            </div>
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <input type="number" class="form-input" id="rentingPriceInput" placeholder="Renting Price (THB/mo)">
+            </div>
+
+            <div class="modal-actions" style="justify-content: center; gap: 1.5rem; margin-top: 2rem;">
+                <button class="btn-action modal-btn-return" id="closeEditPriceModal" style="padding: 0.8rem 2rem;">Return</button>
+                <button class="btn-action modal-btn-edit" id="btnSubmitEditPrice" style="padding: 0.8rem 2rem;">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Name Modal -->
+    <div class="modal-overlay" id="editNameModal">
+        <div class="modal-content" style="max-width: 450px; padding: 2.5rem 3rem;">
+            <h2 class="modal-title">Edit House Name & Rating</h2>
+            
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label class="form-label" style="min-width: 100px;">House Name</label>
+                <input type="text" class="form-input" id="nameInput" placeholder="House Name">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label class="form-label" style="min-width: 100px;">Rating (1-5)</label>
+                <select class="form-input" id="ratingInput">
+                    <option value="1">1 Skull</option>
+                    <option value="2">2 Skulls</option>
+                    <option value="3">3 Skulls</option>
+                    <option value="4">4 Skulls</option>
+                    <option value="5">5 Skulls</option>
+                </select>
+            </div>
+
+            <div class="modal-actions" style="justify-content: center; gap: 1.5rem; margin-top: 2rem;">
+                <button class="btn-action modal-btn-return" id="closeEditNameModal" style="padding: 0.8rem 2rem;">Return</button>
+                <button class="btn-action modal-btn-edit" id="btnSubmitEditName" style="padding: 0.8rem 2rem;">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Description Modal -->
+    <div class="modal-overlay" id="editDescModal">
+        <div class="modal-content" style="max-width: 550px; padding: 2.5rem 3rem;">
+            <h2 class="modal-title">Edit House Information</h2>
+            
+            <div class="form-group" style="margin-bottom: 1.5rem; align-items: flex-start;">
+                <label class="form-label" style="min-width: 120px; padding-top: 0.8rem;">Description</label>
+                <textarea class="form-input form-textarea" id="descInput" rows="4" placeholder="New Description..."></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="min-width: 120px;">House ID</label>
+                <input type="text" class="form-input" id="idInput" value="69" readonly>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="min-width: 120px;">Bedrooms</label>
+                <input type="number" class="form-input" id="bedInput" min="0" max="20" placeholder="0">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="min-width: 120px;">Bathrooms</label>
+                <input type="number" class="form-input" id="bathInput" min="0" max="20" placeholder="0">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="min-width: 120px;">Basements</label>
+                <input type="number" class="form-input" id="baseInput" min="0" max="5" placeholder="0">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <label class="form-label" style="min-width: 120px;">Location (Area)</label>
+                <select class="form-input" id="locationInput">
+                    <option value="Sukhumvit">Sukhumvit</option>
+                    <option value="Nimman">Nimman</option>
+                    <option value="Patong">Patong</option>
+                    <option value="Hua Hin Center">Hua Hin Center</option>
+                    <option value="Thonglor">Thonglor</option>
+                    <option value="Silom">Silom</option>
+                    <option value="Kata Beach">Kata Beach</option>
+                    <option value="Santitham">Santitham</option>
+                    <option value="Pattaya Beach">Pattaya Beach</option>
+                    <option value="Samui Chaweng">Samui Chaweng</option>
+                </select>
+            </div>
+
+            <div class="modal-actions" style="justify-content: center; gap: 1.5rem;">
+                <button class="btn-action modal-btn-return" id="closeEditDescModal" style="padding: 0.8rem 2rem;">Return</button>
+                <button class="btn-action modal-btn-edit" id="btnSubmitEditDesc" style="padding: 0.8rem 2rem;">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            requireAdminSession(); // Ensure user is admin
+
+            const params  = new URLSearchParams(window.location.search);
+            const houseId = params.get('id');
+            let currentHouse = null;
+
+            const btnEditImage = document.getElementById('btnEditImage');
+            const editImageModal = document.getElementById('editImageModal');
+            const closeEditImageModal = document.getElementById('closeEditImageModal');
+
+            const btnEditPrice = document.getElementById('btnEditPrice');
+            const editPriceModal = document.getElementById('editPriceModal');
+            const closeEditPriceModal = document.getElementById('closeEditPriceModal');
+            const btnSubmitEditPrice = document.getElementById('btnSubmitEditPrice');
+            const buyingStatusInput = document.getElementById('buyingStatusInput');
+            const buyingPriceInput = document.getElementById('buyingPriceInput');
+            const rentingStatusInput = document.getElementById('rentingStatusInput');
+            const rentingPriceInput = document.getElementById('rentingPriceInput');
+            const priceValueDisplay = document.querySelector('.price-value');
+
+            const btnEditName = document.getElementById('btnEditName');
+            const editNameModal = document.getElementById('editNameModal');
+            const closeEditNameModal = document.getElementById('closeEditNameModal');
+            const btnSubmitEditName = document.getElementById('btnSubmitEditName');
+            const nameInput = document.getElementById('nameInput');
+            const ratingInput = document.getElementById('ratingInput');
+            const nameDisplay = document.querySelector('.house-name');
+
+            const btnEditDesc = document.getElementById('btnEditDesc');
+            const editDescModal = document.getElementById('editDescModal');
+            const closeEditDescModal = document.getElementById('closeEditDescModal');
+            const btnSubmitEditDesc = document.getElementById('btnSubmitEditDesc');
+            const descInput = document.getElementById('descInput');
+            const idInput = document.getElementById('idInput');
+            const locationInput = document.getElementById('locationInput');
+            const bedInput = document.getElementById('bedInput');
+            const bathInput = document.getElementById('bathInput');
+            const baseInput = document.getElementById('baseInput');
+            const detailValues = document.querySelectorAll('.details-grid .detail-value');
+
+            const uploadBtns = document.querySelectorAll('.btn-upload');
+            const uploadDropzoneModal = document.getElementById('uploadDropzoneModal');
+            const btnConfirmUpload = document.getElementById('btnConfirmUpload');
+            
+            const confirmUploadModal = document.getElementById('confirmUploadModal');
+            const previewContent = document.getElementById('previewContent');
+            const btnCancelUpload = document.getElementById('btnCancelUpload');
+            const btnFinalConfirm = document.getElementById('btnFinalConfirm');
+            
+            const editSuccessModal = document.getElementById('editSuccessModal');
+            const btnReturnFromSuccess = document.getElementById('btnReturnFromSuccess');
+            const btnSubmitEditImage = document.getElementById('btnSubmitEditImage');
+            const mainPageImage = document.querySelector('.main-image');
+
+            // ─── 1. Fetch & Populate ────────────────────────────────────────────────
+            if (houseId) {
+                try {
+                    const { data } = await getHouseById(houseId);
+                    currentHouse = data;
+                    populatePage(currentHouse);
+                } catch (err) {
+                    alert('Could not load house data: ' + err.message);
+                }
+            } else {
+                alert('No House ID provided in URL.');
+            }
+
+            function populatePage(house) {
+                nameDisplay.innerHTML = house.HouseName;
+                nameInput.value = house.HouseName;
+
+                // Rating
+                const rating = Math.round(house.avgRating || 0);
+                ratingInput.value = rating || 1;
+                const ratingStars = document.querySelector('.rating-stars');
+                ratingStars.innerHTML = Array.from({ length: 5 }, (_, i) =>
+                    `<i class="fa-solid fa-skull" style="${i < rating ? '' : 'opacity:0.25'}"></i>`
+                ).join('');
+
+                // Price
+                let priceHTML = '';
+                if (house.BuyingStatus) {
+                    priceHTML += `
+                        <div class="data-row">
+                            <div class="data-label">Buying Price</div>
+                            <div class="price-value">${Number(house.BuyingPrice).toLocaleString()} THB</div>
+                        </div>
+                    `;
+                }
+                if (house.RentingStatus) {
+                    priceHTML += `
+                        <div class="data-row">
+                            <div class="data-label">Renting Price</div>
+                            <div class="price-value">${Number(house.RentingPrice).toLocaleString()} THB / mo</div>
+                        </div>
+                    `;
+                }
+                if (!house.BuyingStatus && !house.RentingStatus) {
+                    priceHTML = `
+                        <div class="data-row">
+                            <div class="data-label">Price</div>
+                            <div class="price-value">N/A</div>
+                        </div>
+                    `;
+                }
+                document.getElementById('priceContainer').innerHTML = priceHTML;
+                
+                buyingStatusInput.checked = !!house.BuyingStatus;
+                buyingPriceInput.value = house.BuyingPrice || '';
+                rentingStatusInput.checked = !!house.RentingStatus;
+                rentingPriceInput.value = house.RentingPrice || '';
+
+                // Description and Bottom grid
+                if (detailValues.length >= 6) {
+                    detailValues[0].textContent = house.Description || 'No description available.';
+                    detailValues[1].textContent = house.HouseID;
+                    const loc = [house.Subdistrict, house.District, house.Province, house.Zipcode]
+                        .filter(Boolean).join(', ') || house.HAreaName || '—';
+                    detailValues[2].textContent = loc;
+                    detailValues[3].textContent = house.bedroomCount || 0;
+                    detailValues[4].textContent = house.bathroomCount || 0;
+                    detailValues[5].textContent = house.basementCount || 0;
+                }
+
+                descInput.value = house.Description || '';
+                idInput.value = house.HouseID;
+                idInput.readOnly = true;
+                idInput.style.backgroundColor = '#f3f4f6';
+                locationInput.value = house.HAreaName || '';
+                bedInput.value = house.bedroomCount || 0;
+                bathInput.value = house.bathroomCount || 0;
+                baseInput.value = house.basementCount || 0;
+
+                // Photos
+                const fallback = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=600';
+                const photos = (house.photos && house.photos.length > 0)
+                    ? house.photos.map(p => p.PhotoRef)
+                    : [fallback];
+
+                mainPageImage.src = photos[0];
+                mainPageImage.onerror = () => { mainPageImage.src = fallback; };
+                
+                const thumbsContainer = document.querySelector('.thumbnails');
+                thumbsContainer.innerHTML = '';
+                photos.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.className = 'thumbnail';
+                    img.onerror = () => { img.src = fallback; };
+                    img.addEventListener('click', () => { mainPageImage.src = src; });
+                    thumbsContainer.appendChild(img);
+                });
+
+                // Populate modal tiny previews
+                window.housePhotosBase64 = [...photos];
+                for (let i = 0; i < 4; i++) {
+                    const prev = document.getElementById(`modalPreview_${i}`);
+                    if (prev) {
+                        if (window.housePhotosBase64[i]) {
+                            prev.src = window.housePhotosBase64[i];
+                            prev.style.display = 'block';
+                        } else {
+                            prev.style.display = 'none';
+                        }
+                    }
+                }
+            }
+
+            // ─── 2. Modals UI Logic ─────────────────────────────────────────────────
+            function openModal(modal) { modal.classList.add('active'); }
+            function closeModal(modal) { modal.classList.remove('active'); }
+
+            if (btnEditImage) btnEditImage.addEventListener('click', () => openModal(editImageModal));
+            if (closeEditImageModal) closeEditImageModal.addEventListener('click', () => closeModal(editImageModal));
+
+            if (btnEditPrice) btnEditPrice.addEventListener('click', () => openModal(editPriceModal));
+            if (closeEditPriceModal) closeEditPriceModal.addEventListener('click', () => closeModal(editPriceModal));
+
+            if (btnEditName) btnEditName.addEventListener('click', () => openModal(editNameModal));
+            if (closeEditNameModal) closeEditNameModal.addEventListener('click', () => closeModal(editNameModal));
+
+            if (btnEditDesc) btnEditDesc.addEventListener('click', () => openModal(editDescModal));
+            if (closeEditDescModal) closeEditDescModal.addEventListener('click', () => closeModal(editDescModal));
+
+            // Image Upload Modals Logic
+            if (uploadBtns.length > 0 && uploadDropzoneModal) {
+                uploadBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        window.currentUploadIndex = parseInt(btn.getAttribute('data-index') || 0, 10);
+                        closeModal(editImageModal);
+                        openModal(uploadDropzoneModal);
+                        const fileUploadInput = document.getElementById('fileUploadInput');
+                        const dropzoneIcon = document.getElementById('dropzoneIcon');
+                        if (fileUploadInput) fileUploadInput.value = '';
+                        if (dropzoneIcon) {
+                            dropzoneIcon.innerHTML = `<i class="fa-regular fa-image"></i><div class="dropzone-plus"><i class="fa-solid fa-plus"></i></div>`;
+                        }
+                    });
+                });
+            }
+
+            const dropzoneArea = document.getElementById('dropzoneArea');
+            const fileUploadInput = document.getElementById('fileUploadInput');
+            const dropzoneIcon = document.getElementById('dropzoneIcon');
+            if (dropzoneArea && fileUploadInput) {
+                dropzoneArea.addEventListener('click', () => fileUploadInput.click());
+                fileUploadInput.addEventListener('change', function() {
+                    if (this.files && this.files.length > 0) {
+                        const file = this.files[0];
+                        if (file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = e => {
+                                window.lastUploadedImageSrc = e.target.result;
+                                dropzoneIcon.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 220px; border-radius: 0.4rem; object-fit: contain;">`;
+                            }
+                            reader.readAsDataURL(file);
+                        } else {
+                            dropzoneIcon.innerHTML = `<div style="color: #10b981;"><i class="fa-solid fa-file-circle-check"></i><p>${file.name}</p></div>`;
+                        }
+                    }
+                });
+            }
+
+            let currentRotation = 0, isCropped = false;
+            function updateImageTransform(img) {
+                const scale = isCropped ? 'scale(1.3)' : 'scale(1)';
+                img.style.transform = `${scale} rotate(${currentRotation}deg)`;
+            }
+
+            if (btnConfirmUpload) {
+                btnConfirmUpload.addEventListener('click', () => {
+                    closeModal(uploadDropzoneModal);
+                    openModal(confirmUploadModal);
+                    currentRotation = 0; isCropped = false;
+                    const img = dropzoneIcon.querySelector('img');
+                    if (img && previewContent) {
+                        previewContent.innerHTML = `<img id="finalPreviewImage" src="${img.src}" style="max-width: 100%; max-height: 250px; object-fit: contain; transition: transform 0.3s ease;">`;
+                    }
+                });
+            }
+
+            const btnRotateImage = document.getElementById('btnRotateImage');
+            const btnCropImage = document.getElementById('btnCropImage');
+            if (btnRotateImage) btnRotateImage.addEventListener('click', () => {
+                const img = document.getElementById('finalPreviewImage');
+                if (img) { currentRotation += 90; updateImageTransform(img); }
+            });
+            if (btnCropImage) btnCropImage.addEventListener('click', () => {
+                const img = document.getElementById('finalPreviewImage');
+                if (img) { isCropped = !isCropped; updateImageTransform(img); }
+            });
+
+            if (btnCancelUpload) btnCancelUpload.addEventListener('click', () => {
+                closeModal(confirmUploadModal);
+                openModal(uploadDropzoneModal);
+            });
+            if (btnFinalConfirm) btnFinalConfirm.addEventListener('click', () => {
+                // Save to array
+                if (window.lastUploadedImageSrc) {
+                    if (!window.housePhotosBase64) window.housePhotosBase64 = [];
+                    const idx = window.currentUploadIndex || 0;
+                    window.housePhotosBase64[idx] = window.lastUploadedImageSrc;
+                    
+                    // Update preview tiny img
+                    const prev = document.getElementById(`modalPreview_${idx}`);
+                    if (prev) {
+                        prev.src = window.lastUploadedImageSrc;
+                        prev.style.display = 'block';
+                    }
+                }
+                closeModal(confirmUploadModal);
+                openModal(editImageModal);
+            });
+
+            // Outside click handling
+            window.addEventListener('click', (e) => {
+                const modals = [editImageModal, uploadDropzoneModal, confirmUploadModal, editSuccessModal, editPriceModal, editNameModal, editDescModal];
+                modals.forEach(m => { if (e.target === m) closeModal(m); });
+            });
+
+            if (btnReturnFromSuccess) btnReturnFromSuccess.addEventListener('click', () => closeModal(editSuccessModal));
+
+            // ─── 3. Submit API Updates ──────────────────────────────────────────────
+
+            // Submit Image Edit
+            if (btnSubmitEditImage) {
+                btnSubmitEditImage.addEventListener('click', async () => {
+                    if (!currentHouse || !window.housePhotosBase64) return;
+                    
+                    try {
+                        btnSubmitEditImage.textContent = 'Saving...';
+                        
+                        // Pass array to backend API
+                        await updateHousePhotos(currentHouse.HouseID, window.housePhotosBase64);
+                        
+                        closeModal(editImageModal);
+                        openModal(editSuccessModal);
+                        
+                        // Refetch fully
+                        const { data } = await getHouseById(currentHouse.HouseID);
+                        currentHouse = data;
+                        populatePage(currentHouse);
+                    } catch (err) {
+                        alert('Update failed: ' + err.message);
+                    } finally {
+                        btnSubmitEditImage.textContent = 'Edit';
+                    }
+                });
+            }
+
+            // Submit Price Edit
+            if (btnSubmitEditPrice) {
+                btnSubmitEditPrice.addEventListener('click', async () => {
+                    if (!currentHouse) return;
+                    
+                    const payload = { 
+                        BuyingStatus: buyingStatusInput.checked ? 1 : 0,
+                        BuyingPrice: buyingPriceInput.value ? Number(buyingPriceInput.value) : 0,
+                        RentingStatus: rentingStatusInput.checked ? 1 : 0,
+                        RentingPrice: rentingPriceInput.value ? Number(rentingPriceInput.value) : 0
+                    };
+                    
+                    try {
+                        btnSubmitEditPrice.textContent = 'Saving...';
+                        await updateHouse(currentHouse.HouseID, payload);
+                        
+                        closeModal(editPriceModal);
+                        openModal(editSuccessModal);
+                        
+                        currentHouse = { ...currentHouse, ...payload };
+                        populatePage(currentHouse);
+                    } catch (err) {
+                        alert('Update failed: ' + err.message);
+                    } finally {
+                        btnSubmitEditPrice.textContent = 'Edit';
+                    }
+                });
+            }
+
+            // Submit Name Edit
+            if (btnSubmitEditName) {
+                btnSubmitEditName.addEventListener('click', async () => {
+                    if (!currentHouse) return;
+                    const payload = { HouseName: nameInput.value.trim() };
+                    const newRating = parseInt(ratingInput.value, 10);
+                    
+                    try {
+                        btnSubmitEditName.textContent = 'Saving...';
+                        
+                        // Update House Name
+                        await updateHouse(currentHouse.HouseID, payload);
+                        
+                        // Update Rating (forces average to be exactly this value by deleting old ratings)
+                        await updateRating(currentHouse.HouseID, newRating);
+                        
+                        closeModal(editNameModal);
+                        openModal(editSuccessModal);
+                        
+                        // Refetch fully to compute new avgRating
+                        const { data } = await getHouseById(currentHouse.HouseID);
+                        currentHouse = data;
+                        populatePage(currentHouse);
+                    } catch (err) {
+                        alert('Update failed: ' + err.message);
+                    } finally {
+                        btnSubmitEditName.textContent = 'Edit';
+                    }
+                });
+            }
+
+            // Submit Description Edit
+            if (btnSubmitEditDesc) {
+                btnSubmitEditDesc.addEventListener('click', async () => {
+                    if (!currentHouse) return;
+                    
+                    let beds = parseInt(bedInput.value, 10) || 0;
+                    let baths = parseInt(bathInput.value, 10) || 0;
+                    let bases = parseInt(baseInput.value, 10) || 0;
+
+                    // Enforce database constraints
+                    if (beds < 0 || beds > 20) return alert('Bedrooms must be between 0 and 20');
+                    if (baths < 0 || baths > 20) return alert('Bathrooms must be between 0 and 20');
+                    if (bases < 0 || bases > 5) return alert('Basements must be between 0 and 5');
+
+                    const payload = {
+                        Description: descInput.value.trim(),
+                        HAreaName: locationInput.value.trim(),
+                        bedroomCount: beds,
+                        bathroomCount: baths,
+                        basementCount: bases
+                    };
+                    
+                    try {
+                        btnSubmitEditDesc.textContent = 'Saving...';
+                        await updateHouse(currentHouse.HouseID, payload);
+                        
+                        closeModal(editDescModal);
+                        openModal(editSuccessModal);
+                        
+                        currentHouse = { ...currentHouse, ...payload };
+                        
+                        // Refetch to get updated Province/District based on new HAreaName (if backend does it automatically)
+                        const { data } = await getHouseById(currentHouse.HouseID);
+                        currentHouse = data;
+                        populatePage(currentHouse);
+                    } catch (err) {
+                        alert('Update failed: ' + err.message);
+                    } finally {
+                        btnSubmitEditDesc.textContent = 'Edit';
+                    }
+                });
+            }
+
+            // ─── Sign out logic ───────────────────────────────────────────
+            const btnSignOut = document.getElementById('btnSignOut');
+            if (btnSignOut) {
+                btnSignOut.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    clearAdminSession();
+                    window.location.href = '/homepage';
+                });
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+</body>
+</html>

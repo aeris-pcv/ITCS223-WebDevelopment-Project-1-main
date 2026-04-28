@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Haunted House - Long Gone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/buy_search.css">
+    <!-- shared API client -->
+    <script src="../script.js"></script>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="/homepage" class="nav-brand">Long Gone</a>
+            <div class="nav-links">
+                <a href="/buy_search" class="active">Buy</a>
+                <a href="/renting_search">Rent</a>
+                <a href="/team_page">Our Team</a>
+            </div>
+            <a href="/log_in" class="admin-btn">
+                <i class="fa-solid fa-lock"></i> Admin
+            </a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Buy Haunted House</h1>
+        
+        <div class="search-container">
+            <div class="form-group">
+                <label>Category</label>
+                <select id="filterCategory">
+                    <option value="">All</option>
+                    <option>Villa</option>
+                    <option>Condo</option>
+                    <option>Townhouse</option>
+                    <option>Mansion</option>
+                    <option>Bungalow</option>
+                    <option>Penthouse</option>
+                    <option>Studio</option>
+                    <option>Cabin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Rating</label>
+                <select id="filterRating">
+                    <option value="">Any</option>
+                    <option value="5">5 ☠☠☠☠☠</option>
+                    <option value="4">4 ☠☠☠☠</option>
+                    <option value="3">3 ☠☠☠</option>
+                    <option value="2">2 ☠☠</option>
+                    <option value="1">1 ☠</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="filterLocation" placeholder="Address...">
+            </div>
+            <button class="search-btn" id="btnSearch">
+                Search <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <hr class="divider">
+
+        <p id="resultCount" style="margin-bottom: 1rem; color: #6b7280; font-size: 0.95rem;"></p>
+
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Populated by JS -->
+            <p style="color:#9ca3af; padding:2rem;">Loading houses for sale...</p>
+        </div>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const grid        = document.getElementById('cardsGrid');
+    const resultCount = document.getElementById('resultCount');
+    const btnSearch   = document.getElementById('btnSearch');
+
+    const FALLBACK = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=600&auto=format&fit=crop';
+
+    function buildCard(house) {
+        const photo    = (house.photos && house.photos.length > 0) ? house.photos[0].PhotoRef : FALLBACK;
+        const price    = house.BuyingPrice ? Number(house.BuyingPrice).toLocaleString() + ' THB' : 'N/A';
+        const rating   = Math.round(house.avgRating || 0);
+        const skulls   = Array.from({ length: 5 }, (_, i) =>
+            `<i class="fa-solid fa-skull" style="${i < rating ? '' : 'opacity:0.25'}"></i>`
+        ).join('');
+        const location = [house.District, house.Province, house.Zipcode].filter(Boolean).join(', ')
+                         || house.HAreaName || '';
+
+        const card = document.createElement('div');
+        card.className = 'house-card';
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', () => {
+            window.location.href = `/product_detail?id=${house.HouseID}`;
+        });
+        card.innerHTML = `
+            <img src="${photo}" alt="${house.HouseName}" class="house-img"
+                onerror="this.src='${FALLBACK}'">
+            <div class="card-content">
+                <div class="card-header">
+                    <h3 class="house-name">${house.HouseName}</h3>
+                </div>
+                <div class="house-location">
+                    <i class="fa-solid fa-location-dot"></i> ${location}
+                </div>
+                <div class="card-footer">
+                    <div class="house-price">${price}</div>
+                    <div class="house-rating">${skulls}</div>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    function renderCards(houses) {
+        grid.innerHTML = '';
+        if (houses.length === 0) {
+            grid.innerHTML = '<p style="color:#9ca3af; padding:2rem; grid-column:1/-1;">No houses found matching your search.</p>';
+            resultCount.textContent = '0 results';
+            return;
+        }
+        resultCount.textContent = `${houses.length} house${houses.length !== 1 ? 's' : ''} found`;
+        houses.forEach(h => grid.appendChild(buildCard(h)));
+    }
+
+    async function fetchHouses() {
+        const category = document.getElementById('filterCategory').value;
+        const rating   = document.getElementById('filterRating').value;
+        const location = document.getElementById('filterLocation').value.trim();
+
+        grid.innerHTML = '<p style="color:#9ca3af; padding:2rem;">Searching...</p>';
+        resultCount.textContent = '';
+
+        try {
+            const { data } = await searchHouses({
+                type: 'buy',
+                category: category || undefined,
+                rating:   rating   || undefined,
+                location: location || undefined,
+            });
+            renderCards(data);
+        } catch (err) {
+            grid.innerHTML = `<p style="color:#ef4444; padding:2rem; grid-column:1/-1;">
+                Could not connect to API (${err.message}). Is the backend running?
+            </p>`;
+            console.error('Buy search error:', err);
+        }
+    }
+
+    btnSearch.addEventListener('click', fetchHouses);
+
+    document.getElementById('filterLocation').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') fetchHouses();
+    });
+
+    (function applyURLParams() {
+        const p = new URLSearchParams(window.location.search);
+        if (p.get('category')) document.getElementById('filterCategory').value = p.get('category');
+        if (p.get('rating'))   document.getElementById('filterRating').value   = p.get('rating');
+        if (p.get('location')) document.getElementById('filterLocation').value = p.get('location');
+    })();
+
+    fetchHouses();
+});
+</script>
+
+    <footer id="siteFooter" class="site-footer">
+        <p>&copy; 2026 Long Gone — All Spirits Reserved. | ITCS223 Section 2, Group 3</p>
+    </footer>
+
+</body>
+</html>
