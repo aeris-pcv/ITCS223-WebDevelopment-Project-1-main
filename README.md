@@ -8,24 +8,53 @@
 **Modern browser**,
 **Postman**
 
-1. Change the environment file named `.env` with your MySQL information
+**When use terminal please use cmd(command prompt)**
 
-2. ### Install back-end dependencies
+1. Change the environment file named `.env` in folder call `sec2_gr3_ws_src` with your MySQL information
+```bash
+PORT=3000
+DB_USER="test_user2"  #This one
+DB_PASSWORD="test_user12345" # This one
+DB_NAME="long_gone_db"
+DB_HOST="localhost"
+```
 
+2. ### Install back-end dependencies 
+by open 2 terminal
+
+First terminal
 ```bash
 # inside sec2_gr3_ws_src/
+cd sec2_gr3_ws_src
 npm install
 ```
 
+Second terminal
 ```bash
 # inside sec2_gr3_fe_src/
+cd sec2_gr3_fe_src
 npm install
 ```
 
 Packages installed.
 ---
+3. ### Connect database to MySQL
+- By searching MySQL inside your computer
+![alt text](/readme_img_folder/image.png)
+- Open MySQL then select your available connecttion and type your pass word then click **ok**
+![alt text](/readme_img_folder/image-1.png)
+- Click **file** then clcik **Open SQL Script**
+![alt text](/readme_img_folder/image-2.png)
+- Now go to the folder where you put this project in after that select file name **sec2_gr3_database.sql** click **open**
+![alt text](/readme_img_folder/image-3.png)
+- Run the script 1 time by clicking the **execute** button
+![alt text](/readme_img_folder/image-4.png)
+- 
 
-3. ### Start the back-end web service
+Now you can run our database.
+---
+
+4. ### Start the back-end web service
 
 ```bash
 cd ../sec2_gr3_ws_src
@@ -43,7 +72,7 @@ The API is now available at **`http://localhost:3000`**.
 
 ---
 
-4. ### Start the front-end server
+5. ### Start the front-end server
 
 Open a **new terminal**, go to the front-end folder, and start a static file server:
 
