@@ -41,7 +41,7 @@ Packages installed.
 3. ### Connect database to MySQL
 - By searching MySQL inside your computer
 ![alt text](/readme_img_folder/image.png)
-- Open MySQL then select your available connecttion and type your pass word then click **ok**
+- Open MySQL then select your available connecttion and type your password then click **ok**
 ![alt text](/readme_img_folder/image-1.png)
 - Click **file** then clcik **Open SQL Script**
 ![alt text](/readme_img_folder/image-2.png)
