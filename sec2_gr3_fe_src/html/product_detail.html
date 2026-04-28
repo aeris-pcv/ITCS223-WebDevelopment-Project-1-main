@@ -48,7 +48,7 @@
                     </div>
                     <i class="fa-solid fa-chevron-down nav-arrow"></i>
                 </div>
-                <img src="" class="main-image" id="mainImage" alt="Main House View">
+                <img class="main-image" id="mainImage" alt="Main House View">
             </div>
 
             <!-- Product Info -->
@@ -224,8 +224,10 @@
 
                 const mainImg      = document.getElementById('mainImage');
                 const thumbCol     = document.getElementById('thumbnailCol');
-                mainImg.src        = photos[0];
-                mainImg.onerror    = () => { mainImg.src = fallback; };
+                mainImg.style.opacity = '0';
+                mainImg.onload  = () => { mainImg.style.opacity = '1'; };
+                mainImg.onerror = () => { mainImg.src = fallback; mainImg.style.opacity = '1'; };
+                mainImg.src     = photos[0];
 
                 thumbCol.innerHTML = '';
                 photos.forEach((src, i) => {

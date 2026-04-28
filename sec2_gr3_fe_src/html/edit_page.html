@@ -46,12 +46,8 @@
         <!-- Top Details Section -->
         <div class="edit-top">
             <div class="images-col">
-                <div class="thumbnails">
-                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 1" onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=200'">
-                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 2" onerror="this.src='https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200'">
-                    <img src="../images/Chindanai.jpg" class="thumbnail" alt="Thumb 3" onerror="this.src='https://images.unsplash.com/photo-1505843513577-22bb7abd211a?w=200'">
-                </div>
-                <img src="../images/Chindanai.jpg" class="main-image" alt="Main View" onerror="this.src='https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=600'">
+                <div class="thumbnails"></div>
+                <img class="main-image" alt="Main View">
             </div>
 
             <div class="info-col">
@@ -458,13 +454,14 @@
                 baseInput.value = house.basementCount || 0;
 
                 // Photos
-                const fallback = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=600';
+                const mainFallback = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=600';
+                const thumbFallback = 'https://images.unsplash.com/photo-1518599904199-0ca897819ddb?w=200';
                 const photos = (house.photos && house.photos.length > 0)
                     ? house.photos.map(p => p.PhotoRef)
-                    : [fallback];
+                    : [mainFallback];
 
                 mainPageImage.src = photos[0];
-                mainPageImage.onerror = () => { mainPageImage.src = fallback; };
+                mainPageImage.onerror = () => { mainPageImage.src = mainFallback; };
                 
                 const thumbsContainer = document.querySelector('.thumbnails');
                 thumbsContainer.innerHTML = '';
@@ -472,7 +469,8 @@
                     const img = document.createElement('img');
                     img.src = src;
                     img.className = 'thumbnail';
-                    img.onerror = () => { img.src = fallback; };
+                    img.alt = 'House thumbnail';
+                    img.onerror = () => { img.src = thumbFallback; };
                     img.addEventListener('click', () => { mainPageImage.src = src; });
                     thumbsContainer.appendChild(img);
                 });
